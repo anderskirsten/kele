@@ -18,11 +18,23 @@ class Kele
         response = self.class.get("/users/me", headers: {authorization: @auth_token})
         @mentor_id = (JSON.parse(response.body))["current_enrollment"]["mentor_id"]
         @roadmap_id = (JSON.parse(response.body))["current_enrollment"]["roadmap_id"]
+        @email = (JSON.parse(response.body))["email"]
+        p @email
         @user_data = (JSON.parse(response.body, {:symbolize_names => true}))
     end
     
     def get_mentor_availability
         response = self.class.get("/mentors/#{@mentor_id}/student_availability", headers: {authorization: @auth_token})
         @mentor_availability = JSON.parse(response.body, {:symbolize_names => true})
+    end
+    
+    def get_messages(page = 1)
+        response = self.class.get("/message_threads?page=#{page}", headers: {authorization: @auth_token})
+        @messages = JSON.parse(response.body, {:symbolize_names => true})
+    end
+    
+    def create_message(recipient_id, subject, message)
+        response = self.class.post("/messages", headers: {authorization: @auth_token}, body: {sender: @email, recipient_id: recipient_id, subject: subject, "stripped-text": message})
+        puts response
     end
 end
