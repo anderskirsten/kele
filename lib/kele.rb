@@ -19,7 +19,8 @@ class Kele
         @mentor_id = (JSON.parse(response.body))["current_enrollment"]["mentor_id"]
         @roadmap_id = (JSON.parse(response.body))["current_enrollment"]["roadmap_id"]
         @email = (JSON.parse(response.body))["email"]
-        p @email
+        @enrollment_id = (JSON.parse(response.body))["current_enrollment"]["id"]
+        p @enrollment_id
         @user_data = (JSON.parse(response.body, {:symbolize_names => true}))
     end
     
